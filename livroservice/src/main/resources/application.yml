@@ -1,0 +1,15 @@
+server:
+  port: ${PORT:80}
+
+---
+
+spring:
+  data:
+    rest:
+      base-path: /api
+  application:
+    name: livro-service
+  mvc:
+    throw-exception-if-no-handler-found: true
+    static-path-pattern: /static
+---
