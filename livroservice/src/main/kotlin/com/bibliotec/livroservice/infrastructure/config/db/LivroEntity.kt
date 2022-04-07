@@ -1,19 +1,16 @@
 package com.bibliotec.livroservice.infrastructure.config.db
 
+import org.hibernate.Hibernate
 import org.hibernate.validator.constraints.Range
+import org.springframework.data.annotation.CreatedBy
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedBy
+import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.format.annotation.DateTimeFormat
 import java.math.BigDecimal
+import java.time.Instant
 import java.time.LocalDate
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Table
-import javax.persistence.ManyToMany
-import javax.persistence.FetchType
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.Enumerated
-import javax.persistence.ManyToOne
-import javax.persistence.EnumType
+import javax.persistence.*
 import javax.validation.constraints.DecimalMin
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
@@ -23,26 +20,40 @@ import javax.validation.constraints.Size
 
 @Entity
 @Table(name = "tb_livro")
-class LivroEntity : AbstractAuditingEntity() {
+data class LivroEntity(
 
-    companion object {
-        /**
-         *
-         */
-        private const val serialVersionUID = -7879526825677312026L
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    val id: Long? = null,
+
+    @CreatedBy
+    @Column(name = "created_by", nullable = false, length = 70, updatable = false)
+    val createdBy: String? = null,
+
+    @CreatedDate
+    @Column(name = "created_date", updatable = false)
+    val createdDate: Instant? = Instant.now(),
+
+    @LastModifiedBy
+    @Column(name = "last_modified_by", length = 70)
+    val lastModifiedBy: String? = null,
+
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
+    val lastModifiedDate: Instant? = Instant.now(),
 
     @Column(name = "codBarras", length = 13)
-    private val codBarras: String? = null
+    val codBarras: String? = null,
 
     @Size(max = 256)
     @Column(name = "imagenUrl", length = 256)
-    private val imagenUrl: String? = null
+    val imagenUrl: String? = null,
 
     @NotBlank(message = "Digite um nome de livro")
     @Size(max = 200, message = "Nome de livro muito grande")
     @Column(name = "nome")
-    private val nome: String? = null
+    val nome: String? = null,
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -50,20 +61,20 @@ class LivroEntity : AbstractAuditingEntity() {
         joinColumns = [JoinColumn(name = "id_livro")],
         inverseJoinColumns = [JoinColumn(name = "id_autor")]
     )
-    private val autoresEntity: Set<AutorEntity> = HashSet<AutorEntity>()
+    val autoresEntity: Set<AutorEntity> = HashSet<AutorEntity>(),
 
 
     @JoinColumn(name = "idEditora")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private val editora: EditoraEntity? = null
+    val editora: EditoraEntity? = null,
 
     @NotNull(message = "Este campo é obrigatorio")
     @Column(name = "edicao")
-    private val edicao: String? = null
+    val edicao: String? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "idioma")
-    private val idiomaEnum: IdiomaEnum? = null
+    val idiomaEnum: IdiomaEnum? = null,
 
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -72,31 +83,31 @@ class LivroEntity : AbstractAuditingEntity() {
         joinColumns = [JoinColumn(name = "id_livro")],
         inverseJoinColumns = [JoinColumn(name = "id_categoria")]
     )
-    private val categorias: Set<CategoriaEntity> = HashSet<CategoriaEntity>()
+    val categorias: Set<CategoriaEntity> = HashSet<CategoriaEntity>(),
 
     @Size(max = 8388607, min = 3, message = "Descrição do livro muito grande")
     @Column(name = "descricao")
-    private val descricao: String? = null
+    val descricao: String? = null,
 
     @NotNull(message = "Insira o ISBN do livro")
     @Column(name = "isbn13")
-    private val isbn13: String? = null
+     val isbn13: String? = null,
 
     @NotNull(message = "O livro deve ter o número de paginas")
     @Min(value = 1, message = "O livro deve ter no minimo 1 pagina")
     @Column(name = "numeroPaginas")
-    private val numeroPaginas: Int? = null
+    val numeroPaginas: Int? = null,
 
     @NotNull(message = "Insira uma data de publicação")
     @Past(message = "A data deve ser inferior a atual")
     @Column(name = "dataPublicacao")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private val dataPublicacao: LocalDate? = null
+    val dataPublicacao: LocalDate? = null,
 
     @DecimalMin(value = "1.00", message = "O livro deve ter um preço valido")
     @NotNull(message = "Insira um preço")
     @Column(name = "valorUnitario", precision = 10, scale = 2)
-    private val valorUnitario = BigDecimal.ZERO
+    val valorUnitario: BigDecimal? = BigDecimal.ZERO,
 
 
     @NotNull(message = "Informe uma quantidade adicionada em seu Estoque de Livros")
@@ -106,6 +117,26 @@ class LivroEntity : AbstractAuditingEntity() {
         max = 100,
         message = "Informe pelo menos {min} livro para Salvar no Estoque ou um valor maximo de {max}"
     )
-    private val quantidade: Int? = null
+    val quantidade: Int? = null,
+
+    ): AbstractAuditingEntity() {
+
+    companion object {
+        /**
+         *
+         */
+        private const val serialVersionUID = -7879526825677312026L
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
+        other as LivroEntity
+
+        return id != null && id == other.id
+    }
+
+    override fun hashCode(): Int = javaClass.hashCode()
+
 
 }
