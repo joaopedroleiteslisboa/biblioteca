@@ -1,1 +1,1 @@
-rootProject.name = "livroservice"
+rootProject.name = "bookservice"

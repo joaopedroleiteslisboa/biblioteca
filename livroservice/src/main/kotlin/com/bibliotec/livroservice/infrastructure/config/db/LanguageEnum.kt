@@ -1,6 +1,6 @@
 package com.bibliotec.livroservice.infrastructure.config.db
 
-enum class IdiomaEnum(val idioma: String) {
+enum class LanguageEnum(val idioma: String) {
 
     ESPANHOL("Espanhol"),
     INGLES("Ingles"),

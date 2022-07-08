@@ -30,7 +30,6 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("javax.validation:validation-api:2.0.1.Final")
 	implementation("org.hibernate:hibernate-validator:8.0.0.Alpha3")
-	implementation ("org.springframework.cloud:spring-cloud-starter-sleuth")
 
 }
 

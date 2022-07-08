@@ -1,10 +1,11 @@
-package com.bibliotec.livroservice.infrastructure.livro.controller.dto
+package com.bibliotec.livroservice.infrastructure.book.controller.dto
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import java.time.Instant
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Size
 
-data class CategoriaDTO(
+data class Author(
 
     var id: Long? = null,
 
@@ -16,10 +17,15 @@ data class CategoriaDTO(
 
     val lastModifiedDate: Instant? = Instant.now(),
 
-    @NotBlank(message = "Este campo não pode ficar em branco")
+    @NotBlank(message = "O nome é Obrigatório")
+    @Size(min = 3, max = 60)
     val nome: String? = null,
 
+    @NotBlank(message = "Uma descricão seria ideal")
+    @Size(max = 5000)
+    val descricao: String? = null,
+
     @JsonBackReference
-    val livros: List<LivroDTO>? = null
+    val livros: List<Book>? = null
 
 )

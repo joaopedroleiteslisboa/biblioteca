@@ -1,7 +1,7 @@
 package com.bibliotec.livroservice.domain.livro.gateway
 
-import com.bibliotec.livroservice.infrastructure.config.db.LivroEntity
-import com.bibliotec.livroservice.infrastructure.livro.controller.dto.LivroDTO
+import com.bibliotec.livroservice.infrastructure.config.db.BookEntity
+import com.bibliotec.livroservice.infrastructure.book.controller.dto.Book
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.util.*
@@ -9,19 +9,19 @@ import java.util.*
 interface LivroGateway {
 
 
-    fun save(livroDTO: LivroDTO)
+    fun save(book: Book): Book
 
-    fun findByIsbn13(isbn13: String?): Optional<LivroEntity?>?
+    fun findByIsbn13(isbn13: String): Optional<Book?>?
 
-    fun findByNomeContaining(nome: String?, pageable: Pageable?): Page<LivroEntity?>?
+    fun findByNomeContaining(nome: String, pageable: Pageable?): Page<Book?>?
 
-    fun deleteById(id: Long?)
+    fun deleteById(id: Long)
 
-    fun existsById(id: Long?): Boolean?
+    fun existsById(id: Long): Boolean?
 
-    fun findOneByCodBarrasIgnoreCase(codBarras: String?): Optional<LivroEntity?>?
+    fun findOneByCodBarrasIgnoreCase(codBarras: String): Book
 
-    fun findOneByIsbn13IgnoreCase(isbn13: String?): Optional<LivroEntity?>?
+    fun findOneByIsbn13IgnoreCase(isbn13: String): Book?
 
 }
 

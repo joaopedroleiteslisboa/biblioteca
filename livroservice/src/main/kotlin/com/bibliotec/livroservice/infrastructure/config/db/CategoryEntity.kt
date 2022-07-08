@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank
 
 @Entity
 @Table(name = "tb_categoria")
-class CategoriaEntity(
+class CategoryEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +36,11 @@ class CategoriaEntity(
 
     @NotBlank(message = "Este campo não pode ficar em branco")
     @Column(name = "nome", unique = true, length = 40)
-    private val nome: String? = null,
+    val nome: String? = null,
 
     @JsonBackReference
     @ManyToMany(mappedBy = "categorias", fetch = FetchType.EAGER)
-    private val livros: List<LivroEntity>? = null
+    val livros: List<BookEntity>? = null
 
 ): AbstractAuditingEntity() {
 

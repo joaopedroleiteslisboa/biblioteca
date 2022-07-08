@@ -11,8 +11,8 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
 @Entity
-@Table(name = "tb_autor")
-class AutorEntity(
+@Table(name = "tb_editora")
+class PublisherEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,28 +35,28 @@ class AutorEntity(
     @Column(name = "last_modified_date")
     val lastModifiedDate: Instant? = Instant.now(),
 
+
     @NotBlank(message = "O nome é Obrigatório")
-    @Column(name = "nome")
     @Size(min = 3, max = 60)
+    @Column(name = "nome")
     val nome: String? = null,
 
-    @NotBlank(message = "Uma descricão seria ideal")
+    @NotBlank(message = "Uma descricao seria ideal")
     @Size(max = 5000)
     @Column(name = "descricao")
     val descricao: String? = null,
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "autoresEntity", fetch = FetchType.EAGER)
-    val livros: List<LivroEntity>? = null,
+    @OneToMany(mappedBy = "editora", orphanRemoval = false, fetch = FetchType.EAGER)
+    val livros: List<BookEntity>? = null
 
-    ) : AbstractAuditingEntity() {
 
+): AbstractAuditingEntity() {
     companion object {
         /**
          *
          */
-        private const val serialVersionUID = 2294635258767344611L
+        private const val serialVersionUID = -7879526821867312026L
     }
-
 
 }
