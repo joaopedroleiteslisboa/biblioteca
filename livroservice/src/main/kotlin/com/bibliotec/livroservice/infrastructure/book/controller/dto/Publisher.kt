@@ -1,4 +1,4 @@
-package com.bibliotec.livroservice.infrastructure.livro.controller.dto
+package com.bibliotec.livroservice.infrastructure.book.controller.dto
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import java.time.Instant
@@ -6,7 +6,7 @@ import java.time.Instant
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
-data class EditoraDTO(
+data class Publisher(
 
     var id: Long? = null,
 
@@ -27,6 +27,6 @@ data class EditoraDTO(
     var descricao: String? = null,
 
     @JsonBackReference
-    var livros: List<LivroDTO>? = null
+    var livros: List<Book>? = null
 
 )

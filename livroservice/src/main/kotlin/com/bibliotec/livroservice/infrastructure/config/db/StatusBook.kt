@@ -1,6 +1,6 @@
 package com.bibliotec.livroservice.infrastructure.config.db
 
-enum class StatusLivro(private val statusReservado: String) {
+enum class StatusBook(private val statusReservado: String) {
 
     AVARIADO("Avariado"), ATIVO("Ativo");
 
