@@ -5,12 +5,13 @@ import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.Instant
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 
 @Entity
-@Table(name = "tb_categoria")
+@Table(name = "tb_category")
 class CategoryEntity(
 
     @Id
@@ -35,12 +36,12 @@ class CategoryEntity(
     val lastModifiedDate: Instant? = Instant.now(),
 
     @NotBlank(message = "Este campo não pode ficar em branco")
-    @Column(name = "nome", unique = true, length = 40)
-    val nome: String? = null,
+    @Column(name = "name", unique = true, length = 40)
+    val name: String? = null,
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "categorias", fetch = FetchType.EAGER)
-    val livros: List<BookEntity>? = null
+    @ManyToMany(mappedBy = "categorys", fetch = FetchType.EAGER)
+    val books: List<BookEntity>? = null
 
 ): AbstractAuditingEntity() {
 

@@ -1,6 +1,6 @@
 package com.bibliotec.livroservice.domain.livro.gateway
 
-import com.bibliotec.livroservice.infrastructure.book.controller.dto.Book
+import com.bibliotec.livroservice.infrastructure.book.controller.models.Book
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

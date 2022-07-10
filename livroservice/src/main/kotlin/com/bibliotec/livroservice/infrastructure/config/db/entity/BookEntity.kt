@@ -1,12 +1,13 @@
 package com.bibliotec.livroservice.infrastructure.config.db.entity
 
-import com.bibliotec.livroservice.infrastructure.book.controller.dto.Book
+import com.bibliotec.livroservice.infrastructure.book.controller.models.Book
 import org.hibernate.Hibernate
 import org.hibernate.validator.constraints.Range
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import org.springframework.format.annotation.DateTimeFormat
 import java.math.BigDecimal
 import java.time.Instant
@@ -20,7 +21,7 @@ import javax.validation.constraints.Past
 import javax.validation.constraints.Size
 
 @Entity
-@Table(name = "tb_livro")
+@Table(name = "tb_book")
 data class BookEntity(
 
         @Id
@@ -64,19 +65,17 @@ data class BookEntity(
         )
         val authorsEntity: Set<AuthorEntity> = HashSet<AuthorEntity>(),
 
-
         @JoinColumn(name = "idPublisher")
         @ManyToOne(optional = false, fetch = FetchType.EAGER)
         val publisher: PublisherEntity? = null,
 
         @NotNull(message = "Este campo é obrigatorio")
-        @Column(name = "edition")
+        @Column(name = "idEdition")
         val edition: String? = null,
 
         @Enumerated(EnumType.STRING)
         @Column(name = "languageEnum")
         val languageEnum: LanguageEnum? = null,
-
 
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
@@ -87,7 +86,7 @@ data class BookEntity(
         val categorys: Set<CategoryEntity> = HashSet<CategoryEntity>(),
 
         @Size(max = 8388607, min = 3, message = "Descrição do livro muito grande")
-        @Column(name = "descricao")
+        @Column(name = "description")
         val description: String? = null,
 
         @NotNull(message = "Insira o ISBN do livro")
@@ -146,8 +145,8 @@ data class BookEntity(
                                     createdDate = it.createdDate,
                                     lastModifiedBy = it.lastModifiedBy,
                                     lastModifiedDate = it.lastModifiedDate,
-                                    nome = it.nome,
-                                    descricao = it.descricao
+                                    name = it.name,
+                                    description = it.description
                             )
                         }.toSet(),
                         publisher = PublisherEntity(
@@ -156,8 +155,8 @@ data class BookEntity(
                                 createdDate = dto.publisher!!.createdDate,
                                 lastModifiedBy = dto.publisher!!.lastModifiedBy,
                                 lastModifiedDate = dto.publisher!!.lastModifiedDate,
-                                nome = dto.publisher!!.nome,
-                                descricao = dto.publisher!!.descricao
+                                name = dto.publisher!!.nome,
+                                description = dto.publisher!!.descricao
                         ),
                         edition = dto.edition,
                         languageEnum = dto.languageEnum,
@@ -168,7 +167,7 @@ data class BookEntity(
                                     createdDate = it.createdDate,
                                     lastModifiedBy = it.lastModifiedBy,
                                     lastModifiedDate = it.lastModifiedDate,
-                                    nome = it.nome
+                                    name = it.nome
                             )
                         }.toSet(),
                         description = dto.description,

@@ -1,4 +1,4 @@
-package com.bibliotec.livroservice.infrastructure.book.controller.dto
+package com.bibliotec.livroservice.infrastructure.book.controller.models
 
 import com.bibliotec.livroservice.infrastructure.config.db.entity.BookEntity
 import com.bibliotec.livroservice.infrastructure.config.db.entity.LanguageEnum
@@ -97,8 +97,8 @@ class Book(
                                     createdDate = it.createdDate,
                                     lastModifiedBy = it.lastModifiedBy,
                                     lastModifiedDate = it.lastModifiedDate,
-                                    nome = it.nome,
-                                    descricao = it.descricao
+                                    name = it.name,
+                                    description = it.description
                             )
                         }.toSet(),
                         publisher = Publisher(
@@ -107,8 +107,8 @@ class Book(
                                 createdDate = entity.publisher!!.createdDate,
                                 lastModifiedBy = entity.publisher!!.lastModifiedBy,
                                 lastModifiedDate = entity.publisher!!.lastModifiedDate,
-                                nome = entity.publisher!!.nome,
-                                descricao = entity.publisher!!.descricao
+                                name = entity.publisher!!.name,
+                                description = entity.publisher!!.description
                         ),
                         edition = entity.edition,
                         languageEnum = entity.languageEnum,
@@ -119,7 +119,7 @@ class Book(
                                     createdDate = it.createdDate,
                                     lastModifiedBy = it.lastModifiedBy,
                                     lastModifiedDate = it.lastModifiedDate,
-                                    nome = it.nome
+                                    nome = it.name
                             )
                         }.toSet(),
                         description = entity.description,

@@ -1,6 +1,6 @@
 package com.bibliotec.livroservice.infrastructure.config.db.querys
 
-import com.bibliotec.livroservice.infrastructure.book.controller.dto.Publisher
+import com.bibliotec.livroservice.infrastructure.book.controller.models.Publisher
 import com.bibliotec.livroservice.infrastructure.config.db.entity.BookEntity
 import org.springframework.data.jpa.domain.Specification
 import javax.persistence.criteria.CriteriaBuilder

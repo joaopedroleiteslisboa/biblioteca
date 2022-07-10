@@ -1,7 +1,7 @@
 package com.bibliotec.livroservice.usecase
 
 import com.bibliotec.livroservice.domain.livro.gateway.LivroGateway
-import com.bibliotec.livroservice.infrastructure.book.controller.dto.Book
+import com.bibliotec.livroservice.infrastructure.book.controller.models.Book
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
