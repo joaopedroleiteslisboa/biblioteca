@@ -1,7 +1,7 @@
 package com.bibliotec.livroservice.infrastructure.book.gateway.db.repository
 
 import com.bibliotec.livroservice.domain.livro.gateway.LivroGateway
-import com.bibliotec.livroservice.infrastructure.config.db.BookEntity
+import com.bibliotec.livroservice.infrastructure.config.db.entity.BookEntity
 import com.bibliotec.livroservice.infrastructure.book.controller.dto.Book
 import com.bibliotec.livroservice.infrastructure.config.customexception.NotFoundException
 import com.bibliotec.livroservice.infrastructure.config.exception.ErrorMessageConstants

@@ -1,4 +1,4 @@
-package com.bibliotec.livroservice.infrastructure.config.db
+package com.bibliotec.livroservice.infrastructure.config.db.entity
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import javax.persistence.EntityListeners

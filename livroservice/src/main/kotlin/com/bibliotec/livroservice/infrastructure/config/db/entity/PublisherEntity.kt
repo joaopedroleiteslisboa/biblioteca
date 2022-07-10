@@ -1,4 +1,4 @@
-package com.bibliotec.livroservice.infrastructure.config.db
+package com.bibliotec.livroservice.infrastructure.config.db.entity
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import org.springframework.data.annotation.CreatedBy
@@ -8,10 +8,11 @@ import org.springframework.data.annotation.LastModifiedDate
 import java.time.Instant
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Size
 
 @Entity
-@Table(name = "tb_categoria")
-class CategoryEntity(
+@Table(name = "tb_editora")
+class PublisherEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,21 +35,28 @@ class CategoryEntity(
     @Column(name = "last_modified_date")
     val lastModifiedDate: Instant? = Instant.now(),
 
-    @NotBlank(message = "Este campo não pode ficar em branco")
-    @Column(name = "nome", unique = true, length = 40)
+
+    @NotBlank(message = "O nome é Obrigatório")
+    @Size(min = 3, max = 60)
+    @Column(name = "nome")
     val nome: String? = null,
 
+    @NotBlank(message = "Uma descricao seria ideal")
+    @Size(max = 5000)
+    @Column(name = "descricao")
+    val descricao: String? = null,
+
     @JsonBackReference
-    @ManyToMany(mappedBy = "categorias", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "editora", orphanRemoval = false, fetch = FetchType.EAGER)
     val livros: List<BookEntity>? = null
 
-): AbstractAuditingEntity() {
 
+): AbstractAuditingEntity() {
     companion object {
         /**
          *
          */
-        private const val serialVersionUID = -7879582121867312026L
+        private const val serialVersionUID = -7879526821867312026L
     }
 
 }

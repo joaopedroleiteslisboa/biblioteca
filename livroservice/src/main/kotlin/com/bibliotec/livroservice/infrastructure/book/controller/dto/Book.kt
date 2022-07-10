@@ -1,6 +1,7 @@
 package com.bibliotec.livroservice.infrastructure.book.controller.dto
 
-import com.bibliotec.livroservice.infrastructure.config.db.*
+import com.bibliotec.livroservice.infrastructure.config.db.entity.BookEntity
+import com.bibliotec.livroservice.infrastructure.config.db.entity.LanguageEnum
 import org.hibernate.validator.constraints.Range
 import org.springframework.format.annotation.DateTimeFormat
 import java.math.BigDecimal
@@ -27,44 +28,44 @@ class Book(
 
         val lastModifiedDate: Instant? = Instant.now(),
 
-        var codBarras: String? = UUID.randomUUID().toString(),
+        var barCode: String? = UUID.randomUUID().toString(),
 
-        var imagenUrl: String? = null,
+        var imageUrl: String? = null,
 
         @NotBlank(message = "Digite um nome de livro")
         @Size(max = 200, message = "Nome de livro muito grande")
-        var nome: String? = null,
+        var name: String? = null,
 
-        var autoresEntity: Set<Author> = HashSet<Author>(),
+        var authorsEntity: Set<Author> = HashSet<Author>(),
 
-        var editora: Publisher? = null,
+        var publisher: Publisher? = null,
 
         @NotNull(message = "Este campo é obrigatorio")
-        var edicao: String? = null,
+        var edition: String? = null,
 
         @NotNull(message = "O campo indioma é obrigatorio")
         var languageEnum: LanguageEnum? = null,
 
-        var categorias: Set<Category> = HashSet<Category>(),
+        var categorys: Set<Category> = HashSet<Category>(),
 
         @Size(max = 8388607, min = 3, message = "Descrição do livro muito grande")
-        var descricao: String? = null,
+        var description: String? = null,
 
         @NotNull(message = "Insira o ISBN do livro")
         var isbn13: String? = null,
 
         @NotNull(message = "O livro deve ter o número de paginas")
         @Min(value = 1, message = "O livro deve ter no minimo 1 pagina")
-        var numeroPaginas: Int? = null,
+        var pageNumber: Int? = null,
 
         @NotNull(message = "Insira uma data de publicação")
         @Past(message = "A data deve ser inferior a atual")
         @DateTimeFormat(pattern = "dd-MM-yyyy")
-        var dataPublicacao: LocalDate? = null,
+        var publicationDate: LocalDate? = null,
 
         @DecimalMin(value = "1.00", message = "O livro deve ter um preço valido")
         @NotNull(message = "Insira um preço")
-        var valorUnitario: BigDecimal? = BigDecimal.ZERO,
+        var unitaryValue: BigDecimal? = BigDecimal.ZERO,
 
         @NotNull(message = "Informe uma quantidade adicionada em seu Estoque de Livros")
         @Range(
@@ -72,7 +73,7 @@ class Book(
                 max = 100,
                 message = "Informe pelo menos {min} livro para Salvar no Estoque ou um valor maximo de {max}"
         )
-        var quantidade: Int? = null
+        var quantity: Int? = null
 ) {
 
     companion object {
@@ -82,14 +83,14 @@ class Book(
             if (entity != null) {
                 return Book(
                         id = entity.id,
-                        codBarras = entity.codBarras,
+                        barCode = entity.barCode,
                         createdBy = entity.createdBy,
                         createdDate = entity.createdDate,
                         lastModifiedBy = entity.lastModifiedBy,
                         lastModifiedDate = entity.lastModifiedDate,
-                        imagenUrl = entity.imagenUrl,
-                        nome = entity.nome,
-                        autoresEntity = entity.autoresEntity.map {
+                        imageUrl = entity.imageUrl,
+                        name = entity.name,
+                        authorsEntity = entity.authorsEntity.map {
                             Author(
                                     id = it.id,
                                     createdBy = it.createdBy,
@@ -100,18 +101,18 @@ class Book(
                                     descricao = it.descricao
                             )
                         }.toSet(),
-                        editora = Publisher(
-                                id = entity.editora!!.id,
-                                createdBy = entity.editora!!.createdBy,
-                                createdDate = entity.editora!!.createdDate,
-                                lastModifiedBy = entity.editora!!.lastModifiedBy,
-                                lastModifiedDate = entity.editora!!.lastModifiedDate,
-                                nome = entity.editora!!.nome,
-                                descricao = entity.editora!!.descricao
+                        publisher = Publisher(
+                                id = entity.publisher!!.id,
+                                createdBy = entity.publisher!!.createdBy,
+                                createdDate = entity.publisher!!.createdDate,
+                                lastModifiedBy = entity.publisher!!.lastModifiedBy,
+                                lastModifiedDate = entity.publisher!!.lastModifiedDate,
+                                nome = entity.publisher!!.nome,
+                                descricao = entity.publisher!!.descricao
                         ),
-                        edicao = entity.edicao,
+                        edition = entity.edition,
                         languageEnum = entity.languageEnum,
-                        categorias = entity.categorias.map {
+                        categorys = entity.categorys.map {
                             Category(
                                     id = it.id,
                                     createdBy = it.createdBy,
@@ -121,12 +122,12 @@ class Book(
                                     nome = it.nome
                             )
                         }.toSet(),
-                        descricao = entity.descricao,
+                        description = entity.description,
                         isbn13 = entity.isbn13,
-                        numeroPaginas = entity.numeroPaginas,
-                        dataPublicacao = entity.dataPublicacao,
-                        valorUnitario = entity.valorUnitario,
-                        quantidade = entity.quantidade
+                        pageNumber = entity.pageNumber,
+                        publicationDate = entity.publicationDate,
+                        unitaryValue = entity.unitaryValue,
+                        quantity = entity.quantity
                 )
             }
             return Book()

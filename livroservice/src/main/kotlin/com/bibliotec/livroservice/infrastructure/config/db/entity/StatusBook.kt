@@ -1,4 +1,4 @@
-package com.bibliotec.livroservice.infrastructure.config.db
+package com.bibliotec.livroservice.infrastructure.config.db.entity
 
 enum class StatusBook(private val statusReservado: String) {
 

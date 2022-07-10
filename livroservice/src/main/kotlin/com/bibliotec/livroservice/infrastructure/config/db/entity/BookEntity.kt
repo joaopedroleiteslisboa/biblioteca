@@ -1,4 +1,4 @@
-package com.bibliotec.livroservice.infrastructure.config.db
+package com.bibliotec.livroservice.infrastructure.config.db.entity
 
 import com.bibliotec.livroservice.infrastructure.book.controller.dto.Book
 import org.hibernate.Hibernate
@@ -44,51 +44,51 @@ data class BookEntity(
         @Column(name = "last_modified_date")
         val lastModifiedDate: Instant? = Instant.now(),
 
-        @Column(name = "codBarras", length = 13)
-        val codBarras: String? = null,
+        @Column(name = "barCode", length = 13)
+        val barCode: String? = null,
 
         @Size(max = 256)
-        @Column(name = "imagenUrl", length = 256)
-        val imagenUrl: String? = null,
+        @Column(name = "imageUrl", length = 256)
+        val imageUrl: String? = null,
 
         @NotBlank(message = "Digite um nome de livro")
         @Size(max = 200, message = "Nome de livro muito grande")
-        @Column(name = "nome")
-        val nome: String? = null,
+        @Column(name = "name")
+        val name: String? = null,
 
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
-                name = "livro_has_autores",
-                joinColumns = [JoinColumn(name = "id_livro")],
-                inverseJoinColumns = [JoinColumn(name = "id_autor")]
+                name = "livro_has_authors",
+                joinColumns = [JoinColumn(name = "id_book")],
+                inverseJoinColumns = [JoinColumn(name = "id_author")]
         )
-        val autoresEntity: Set<AuthorEntity> = HashSet<AuthorEntity>(),
+        val authorsEntity: Set<AuthorEntity> = HashSet<AuthorEntity>(),
 
 
-        @JoinColumn(name = "idEditora")
+        @JoinColumn(name = "idPublisher")
         @ManyToOne(optional = false, fetch = FetchType.EAGER)
-        val editora: PublisherEntity? = null,
+        val publisher: PublisherEntity? = null,
 
         @NotNull(message = "Este campo é obrigatorio")
-        @Column(name = "edicao")
-        val edicao: String? = null,
+        @Column(name = "edition")
+        val edition: String? = null,
 
         @Enumerated(EnumType.STRING)
-        @Column(name = "idioma")
+        @Column(name = "languageEnum")
         val languageEnum: LanguageEnum? = null,
 
 
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
-                name = "livro_has_categorias",
-                joinColumns = [JoinColumn(name = "id_livro")],
-                inverseJoinColumns = [JoinColumn(name = "id_categoria")]
+                name = "livro_has_categories",
+                joinColumns = [JoinColumn(name = "id_book")],
+                inverseJoinColumns = [JoinColumn(name = "id_category")]
         )
-        val categorias: Set<CategoryEntity> = HashSet<CategoryEntity>(),
+        val categorys: Set<CategoryEntity> = HashSet<CategoryEntity>(),
 
         @Size(max = 8388607, min = 3, message = "Descrição do livro muito grande")
         @Column(name = "descricao")
-        val descricao: String? = null,
+        val description: String? = null,
 
         @NotNull(message = "Insira o ISBN do livro")
         @Column(name = "isbn13")
@@ -96,29 +96,28 @@ data class BookEntity(
 
         @NotNull(message = "O livro deve ter o número de paginas")
         @Min(value = 1, message = "O livro deve ter no minimo 1 pagina")
-        @Column(name = "numeroPaginas")
-        val numeroPaginas: Int? = null,
+        @Column(name = "pageNumber")
+        val pageNumber: Int? = null,
 
         @NotNull(message = "Insira uma data de publicação")
         @Past(message = "A data deve ser inferior a atual")
-        @Column(name = "dataPublicacao")
+        @Column(name = "publicationDate")
         @DateTimeFormat(pattern = "dd-MM-yyyy")
-        val dataPublicacao: LocalDate? = null,
+        val publicationDate: LocalDate? = null,
 
         @DecimalMin(value = "1.00", message = "O livro deve ter um preço valido")
         @NotNull(message = "Insira um preço")
-        @Column(name = "valorUnitario", precision = 10, scale = 2)
-        val valorUnitario: BigDecimal? = BigDecimal.ZERO,
-
+        @Column(name = "unitaryValue", precision = 10, scale = 2)
+        val unitaryValue: BigDecimal? = BigDecimal.ZERO,
 
         @NotNull(message = "Informe uma quantidade adicionada em seu Estoque de Livros")
-        @Column(name = "quantidade")
+        @Column(name = "quantity")
         @Range(
                 min = 1,
                 max = 100,
                 message = "Informe pelo menos {min} livro para Salvar no Estoque ou um valor maximo de {max}"
         )
-        val quantidade: Int? = null,
+        val quantity: Int? = null,
 
         ) : AbstractAuditingEntity() {
 
@@ -133,14 +132,14 @@ data class BookEntity(
             if (dto != null) {
                 return BookEntity(
                         id = dto.id,
-                        codBarras = dto.codBarras,
+                        barCode = dto.barCode,
                         createdBy = dto.createdBy,
                         createdDate = dto.createdDate,
                         lastModifiedBy = dto.lastModifiedBy,
                         lastModifiedDate = dto.lastModifiedDate,
-                        imagenUrl = dto.imagenUrl,
-                        nome = dto.nome,
-                        autoresEntity = dto.autoresEntity.map {
+                        imageUrl = dto.imageUrl,
+                        name = dto.name,
+                        authorsEntity = dto.authorsEntity.map {
                             AuthorEntity(
                                     id = it.id,
                                     createdBy = it.createdBy,
@@ -151,18 +150,18 @@ data class BookEntity(
                                     descricao = it.descricao
                             )
                         }.toSet(),
-                        editora = PublisherEntity(
-                                id = dto.editora!!.id,
-                                createdBy = dto.editora!!.createdBy,
-                                createdDate = dto.editora!!.createdDate,
-                                lastModifiedBy = dto.editora!!.lastModifiedBy,
-                                lastModifiedDate = dto.editora!!.lastModifiedDate,
-                                nome = dto.editora!!.nome,
-                                descricao = dto.editora!!.descricao
+                        publisher = PublisherEntity(
+                                id = dto.publisher!!.id,
+                                createdBy = dto.publisher!!.createdBy,
+                                createdDate = dto.publisher!!.createdDate,
+                                lastModifiedBy = dto.publisher!!.lastModifiedBy,
+                                lastModifiedDate = dto.publisher!!.lastModifiedDate,
+                                nome = dto.publisher!!.nome,
+                                descricao = dto.publisher!!.descricao
                         ),
-                        edicao = dto.edicao,
+                        edition = dto.edition,
                         languageEnum = dto.languageEnum,
-                        categorias = dto.categorias.map {
+                        categorys = dto.categorys.map {
                             CategoryEntity(
                                     id = it.id,
                                     createdBy = it.createdBy,
@@ -172,12 +171,12 @@ data class BookEntity(
                                     nome = it.nome
                             )
                         }.toSet(),
-                        descricao = dto.descricao,
+                        description = dto.description,
                         isbn13 = dto.isbn13,
-                        numeroPaginas = dto.numeroPaginas,
-                        dataPublicacao = dto.dataPublicacao,
-                        valorUnitario = dto.valorUnitario,
-                        quantidade = dto.quantidade
+                        pageNumber = dto.pageNumber,
+                        publicationDate = dto.publicationDate,
+                        unitaryValue = dto.unitaryValue,
+                        quantity = dto.quantity
                 )
             }
             return BookEntity()

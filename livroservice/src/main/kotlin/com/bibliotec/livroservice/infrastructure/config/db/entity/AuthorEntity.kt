@@ -1,4 +1,4 @@
-package com.bibliotec.livroservice.infrastructure.config.db
+package com.bibliotec.livroservice.infrastructure.config.db.entity
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import org.springframework.data.annotation.CreatedBy
