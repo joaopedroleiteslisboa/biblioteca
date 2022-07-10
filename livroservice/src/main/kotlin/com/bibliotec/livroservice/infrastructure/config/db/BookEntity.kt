@@ -128,54 +128,61 @@ data class BookEntity(
          */
         private const val serialVersionUID = -7879526825677312026L
 
-        fun createFromBook(dto: Book) = BookEntity(
-                id = dto.id,
-                codBarras = dto.codBarras,
-                createdBy = dto.createdBy,
-                createdDate = dto.createdDate,
-                lastModifiedBy = dto.lastModifiedBy,
-                lastModifiedDate = dto.lastModifiedDate,
-                imagenUrl = dto.imagenUrl,
-                nome = dto.nome,
-                autoresEntity = dto.autoresEntity.map {
-                    AuthorEntity(
-                            id = it.id,
-                            createdBy = it.createdBy,
-                            createdDate = it.createdDate,
-                            lastModifiedBy = it.lastModifiedBy,
-                            lastModifiedDate = it.lastModifiedDate,
-                            nome = it.nome,
-                            descricao = it.descricao
-                    )
-                }.toSet(),
-                editora = PublisherEntity(
-                        id = dto.editora!!.id,
-                        createdBy = dto.editora!!.createdBy,
-                        createdDate = dto.editora!!.createdDate,
-                        lastModifiedBy = dto.editora!!.lastModifiedBy,
-                        lastModifiedDate = dto.editora!!.lastModifiedDate,
-                        nome = dto.editora!!.nome,
-                        descricao = dto.editora!!.descricao
-                ),
-                edicao = dto.edicao,
-                languageEnum = dto.languageEnum,
-                categorias = dto.categorias.map {
-                    CategoryEntity(
-                            id = it.id,
-                            createdBy = it.createdBy,
-                            createdDate = it.createdDate,
-                            lastModifiedBy = it.lastModifiedBy,
-                            lastModifiedDate = it.lastModifiedDate,
-                            nome = it.nome
-                    )
-                }.toSet(),
-                descricao = dto.descricao,
-                isbn13 = dto.isbn13,
-                numeroPaginas = dto.numeroPaginas,
-                dataPublicacao = dto.dataPublicacao,
-                valorUnitario = dto.valorUnitario,
-                quantidade = dto.quantidade
-        )
+        fun createFromBook(dto: Book?): BookEntity {
+
+            if (dto != null) {
+                return BookEntity(
+                        id = dto.id,
+                        codBarras = dto.codBarras,
+                        createdBy = dto.createdBy,
+                        createdDate = dto.createdDate,
+                        lastModifiedBy = dto.lastModifiedBy,
+                        lastModifiedDate = dto.lastModifiedDate,
+                        imagenUrl = dto.imagenUrl,
+                        nome = dto.nome,
+                        autoresEntity = dto.autoresEntity.map {
+                            AuthorEntity(
+                                    id = it.id,
+                                    createdBy = it.createdBy,
+                                    createdDate = it.createdDate,
+                                    lastModifiedBy = it.lastModifiedBy,
+                                    lastModifiedDate = it.lastModifiedDate,
+                                    nome = it.nome,
+                                    descricao = it.descricao
+                            )
+                        }.toSet(),
+                        editora = PublisherEntity(
+                                id = dto.editora!!.id,
+                                createdBy = dto.editora!!.createdBy,
+                                createdDate = dto.editora!!.createdDate,
+                                lastModifiedBy = dto.editora!!.lastModifiedBy,
+                                lastModifiedDate = dto.editora!!.lastModifiedDate,
+                                nome = dto.editora!!.nome,
+                                descricao = dto.editora!!.descricao
+                        ),
+                        edicao = dto.edicao,
+                        languageEnum = dto.languageEnum,
+                        categorias = dto.categorias.map {
+                            CategoryEntity(
+                                    id = it.id,
+                                    createdBy = it.createdBy,
+                                    createdDate = it.createdDate,
+                                    lastModifiedBy = it.lastModifiedBy,
+                                    lastModifiedDate = it.lastModifiedDate,
+                                    nome = it.nome
+                            )
+                        }.toSet(),
+                        descricao = dto.descricao,
+                        isbn13 = dto.isbn13,
+                        numeroPaginas = dto.numeroPaginas,
+                        dataPublicacao = dto.dataPublicacao,
+                        valorUnitario = dto.valorUnitario,
+                        quantidade = dto.quantidade
+                )
+            }
+            return BookEntity()
+
+        }
     }
 
     override fun equals(other: Any?): Boolean {

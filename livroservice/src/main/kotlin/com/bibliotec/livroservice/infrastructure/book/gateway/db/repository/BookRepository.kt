@@ -10,16 +10,14 @@ import java.util.Optional
 @Repository
 interface BookRepository: JpaRepository<BookEntity, Long> {
 
-    fun findByIsbn13(cpf: String?): BookEntity?
-
-    fun findByNomeContaining(nome: String?, pageable: Pageable?): Page<BookEntity?>?
+    fun findByNameContaining(nome: String?, pageable: Pageable?): Page<BookEntity?>?
 
     fun deleteById(id: Long?)
 
     fun existsById(id: Long?): Boolean
 
-    fun findOneByCodBarrasIgnoreCase(codBarras: String?): Optional<BookEntity?>?
+    fun findOneByCodBarrasIgnoreCase(codBarras: String?): BookEntity?
 
-    fun findOneByIsbn13IgnoreCase(isbn13: String?): Optional<BookEntity?>?
+    fun findOneByIsbn13IgnoreCase(isbn13: String?): BookEntity?
 
 }

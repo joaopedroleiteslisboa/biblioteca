@@ -77,54 +77,60 @@ class Book(
 
     companion object {
 
-        fun createFromBookEntity(entity: BookEntity) = Book(
-                id = entity.id,
-                codBarras = entity.codBarras,
-                createdBy = entity.createdBy,
-                createdDate = entity.createdDate,
-                lastModifiedBy = entity.lastModifiedBy,
-                lastModifiedDate = entity.lastModifiedDate,
-                imagenUrl = entity.imagenUrl,
-                nome = entity.nome,
-                autoresEntity = entity.autoresEntity.map {
-                    Author(
-                            id = it.id,
-                            createdBy = it.createdBy,
-                            createdDate = it.createdDate,
-                            lastModifiedBy = it.lastModifiedBy,
-                            lastModifiedDate = it.lastModifiedDate,
-                            nome = it.nome,
-                            descricao = it.descricao
-                    )
-                }.toSet(),
-                editora = Publisher(
-                        id = entity.editora!!.id,
-                        createdBy = entity.editora!!.createdBy,
-                        createdDate = entity.editora!!.createdDate,
-                        lastModifiedBy = entity.editora!!.lastModifiedBy,
-                        lastModifiedDate = entity.editora!!.lastModifiedDate,
-                        nome = entity.editora!!.nome,
-                        descricao = entity.editora!!.descricao
-                ),
-                edicao = entity.edicao,
-                languageEnum = entity.languageEnum,
-                categorias = entity.categorias.map {
-                    Category(
-                            id = it.id,
-                            createdBy = it.createdBy,
-                            createdDate = it.createdDate,
-                            lastModifiedBy = it.lastModifiedBy,
-                            lastModifiedDate = it.lastModifiedDate,
-                            nome = it.nome
-                    )
-                }.toSet(),
-                descricao = entity.descricao,
-                isbn13 = entity.isbn13,
-                numeroPaginas = entity.numeroPaginas,
-                dataPublicacao = entity.dataPublicacao,
-                valorUnitario = entity.valorUnitario,
-                quantidade = entity.quantidade
-        )
+        fun createFromBookEntity(entity: BookEntity?): Book {
+
+            if (entity != null) {
+                return Book(
+                        id = entity.id,
+                        codBarras = entity.codBarras,
+                        createdBy = entity.createdBy,
+                        createdDate = entity.createdDate,
+                        lastModifiedBy = entity.lastModifiedBy,
+                        lastModifiedDate = entity.lastModifiedDate,
+                        imagenUrl = entity.imagenUrl,
+                        nome = entity.nome,
+                        autoresEntity = entity.autoresEntity.map {
+                            Author(
+                                    id = it.id,
+                                    createdBy = it.createdBy,
+                                    createdDate = it.createdDate,
+                                    lastModifiedBy = it.lastModifiedBy,
+                                    lastModifiedDate = it.lastModifiedDate,
+                                    nome = it.nome,
+                                    descricao = it.descricao
+                            )
+                        }.toSet(),
+                        editora = Publisher(
+                                id = entity.editora!!.id,
+                                createdBy = entity.editora!!.createdBy,
+                                createdDate = entity.editora!!.createdDate,
+                                lastModifiedBy = entity.editora!!.lastModifiedBy,
+                                lastModifiedDate = entity.editora!!.lastModifiedDate,
+                                nome = entity.editora!!.nome,
+                                descricao = entity.editora!!.descricao
+                        ),
+                        edicao = entity.edicao,
+                        languageEnum = entity.languageEnum,
+                        categorias = entity.categorias.map {
+                            Category(
+                                    id = it.id,
+                                    createdBy = it.createdBy,
+                                    createdDate = it.createdDate,
+                                    lastModifiedBy = it.lastModifiedBy,
+                                    lastModifiedDate = it.lastModifiedDate,
+                                    nome = it.nome
+                            )
+                        }.toSet(),
+                        descricao = entity.descricao,
+                        isbn13 = entity.isbn13,
+                        numeroPaginas = entity.numeroPaginas,
+                        dataPublicacao = entity.dataPublicacao,
+                        valorUnitario = entity.valorUnitario,
+                        quantidade = entity.quantidade
+                )
+            }
+            return Book()
+        }
     }
 
 

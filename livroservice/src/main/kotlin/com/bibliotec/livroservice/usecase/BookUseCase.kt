@@ -2,24 +2,39 @@ package com.bibliotec.livroservice.usecase
 
 import com.bibliotec.livroservice.domain.livro.gateway.LivroGateway
 import com.bibliotec.livroservice.infrastructure.book.controller.dto.Book
-import com.bibliotec.livroservice.infrastructure.config.db.BookEntity
-import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
-import java.util.UUID
-import javax.transaction.Transactional
 
 @Component
-class BookUseCase(
-    private val livroGateway: LivroGateway
-) {
+class BookUseCase(private val livroGateway: LivroGateway) {
 
-    private val log = LoggerFactory.getLogger(this::class.java)
+    fun save(book: Book): Book {
+        return this.livroGateway.save(book)
+    }
 
-    @Transactional
-    fun save(book: Book): Book? {
-        log.info("M=save, name=${book.nome}")
+    fun findById(id: Long): Book {
+        return this.livroGateway.findById(id)
+    }
 
-        return livroGateway.save(BookEntity.createFromBook(book))
+    fun findByIsbn13(isbn13: String): Book {
+        return this.livroGateway.findByIsbn13(isbn13)
+    }
+
+    fun findByNameContaining(nome: String?, pageable: Pageable?): Page<Book?>? {
+        return this.livroGateway.findByNameContaining(nome, pageable)
+    }
+
+    fun deleteById(id: Long) {
+        this.livroGateway.deleteById(id)
+    }
+
+    fun existsById(id: Long): Boolean {
+        return this.livroGateway.existsById(id)
+    }
+
+    fun findOneByCodBarrasIgnoreCase(codBarras: String): Book {
+        return this.livroGateway.findOneByCodBarrasIgnoreCase(codBarras)
     }
 
 

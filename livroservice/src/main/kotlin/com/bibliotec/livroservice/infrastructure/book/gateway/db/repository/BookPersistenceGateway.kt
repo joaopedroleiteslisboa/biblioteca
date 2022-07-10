@@ -1,39 +1,77 @@
 package com.bibliotec.livroservice.infrastructure.book.gateway.db.repository
 
 import com.bibliotec.livroservice.domain.livro.gateway.LivroGateway
-import com.bibliotec.livroservice.infrastructure.config.db.AuthorEntity
-import com.bibliotec.livroservice.infrastructure.config.db.CategoryEntity
-import com.bibliotec.livroservice.infrastructure.config.db.PublisherEntity
 import com.bibliotec.livroservice.infrastructure.config.db.BookEntity
 import com.bibliotec.livroservice.infrastructure.book.controller.dto.Book
+import com.bibliotec.livroservice.infrastructure.config.customexception.NotFoundException
+import com.bibliotec.livroservice.infrastructure.config.exception.ErrorMessageConstants
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
-import java.util.Optional
+import javax.transaction.Transactional
 
 @Component
 class BookPersistenceGateway(private val bookRepository: BookRepository) : LivroGateway {
 
+    private val log = LoggerFactory.getLogger(this::class.java)
 
-    override fun save(book: Book) :Book{
+    override fun findById(id: Long): Book {
 
-        Book.createFromBookEntity(this.bookRepository.save(BookEntity.createFromBook(book)))
+        return Book.createFromBookEntity(this.bookRepository.findById(id).orElseThrow { NotFoundException(ErrorMessageConstants.BOOK_NOTFOUND_EXCEPTION) })
+    }
+
+    @Transactional
+    override fun save(book: Book): Book {
+        log.info("M=save, name=${book.nome}")
+
+        return Book.createFromBookEntity(this.bookRepository.save(BookEntity.createFromBook(book)))
 
     }
 
-    override fun findByIsbn13(isbn13: String): BookEntity = this.bookRepository.findByIsbn13(isbn13)
+    override fun findByIsbn13(isbn13: String): Book {
+        log.info("M=findByIsbn13, isbn13=$isbn13")
 
-    override fun findByNomeContaining(nome: String?, pageable: Pageable?): Page<BookEntity?>? =
-            this.bookRepository.findByNomeContaining(nome, pageable)
+        val book = this.bookRepository.findOneByIsbn13IgnoreCase(isbn13) ?: run {
+            log.warn("M=findByIsbn13, isbn13=$isbn13, error=${ErrorMessageConstants.BOOK_NOTFOUND_EXCEPTION}")
+            throw NotFoundException(ErrorMessageConstants.BOOK_NOTFOUND_EXCEPTION)
+        }
 
-    override fun deleteById(id: Long?) = this.bookRepository.deleteById(id)
+        return Book.createFromBookEntity(book)
 
-    override fun existsById(id: Long?): Boolean? = this.bookRepository.existsById(id)
+    }
 
-    override fun findOneByCodBarrasIgnoreCase(codBarras: String?): Optional<BookEntity?>? =
-            this.findOneByCodBarrasIgnoreCase(codBarras)
+    override fun findByNameContaining(name: String?, pageable: Pageable?): Page<Book?>? {
+        log.info("M=findByNomeContaining, name=$name")
 
-    override fun findOneByIsbn13IgnoreCase(isbn13: String?): Optional<BookEntity?>? =
-            this.findOneByIsbn13IgnoreCase(isbn13)
+        var returnBooks: Page<Book?>? = null
+        val booksPageEntity = this.bookRepository.findByNameContaining(name, pageable)?.let { it ->
+            val book = it.content.map { itEntity -> Book.createFromBookEntity(itEntity) }
+            returnBooks = PageImpl(book, it.pageable, book.size.toLong())
+        }
+
+        return returnBooks
+    }
+
+    override fun deleteById(id: Long) {
+        log.info("M=deleteById, id=${id}")
+
+        findById(id)
+        this.bookRepository.deleteById(id)
+    }
+
+    override fun existsById(id: Long): Boolean {
+        log.info("M=existsById, id=${id}")
+
+        return this.bookRepository.existsById(id)
+    }
+
+    override fun findOneByCodBarrasIgnoreCase(codBarras: String): Book {
+        log.info("M=findOneByCodBarrasIgnoreCase, codBarras=${codBarras}")
+
+        return Book.createFromBookEntity(this.bookRepository.findOneByCodBarrasIgnoreCase(codBarras))
+
+    }
 
 }
