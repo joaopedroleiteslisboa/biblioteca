@@ -8,7 +8,7 @@ plugins {
 	kotlin("plugin.jpa") version "1.6.10"
 }
 
-group = "com.bibliotec.livroservice"
+group = "com.bibliotec.bookservice"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
