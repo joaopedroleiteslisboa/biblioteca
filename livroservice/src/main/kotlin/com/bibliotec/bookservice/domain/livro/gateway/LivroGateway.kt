@@ -18,5 +18,5 @@ interface LivroGateway {
 
     fun existsById(id: Long): Boolean
 
-    fun findOneByCodBarrasIgnoreCase(codBarras: String): Book
+    fun findOneBybarCodeIgnoreCase(codBarras: String): Book
 }

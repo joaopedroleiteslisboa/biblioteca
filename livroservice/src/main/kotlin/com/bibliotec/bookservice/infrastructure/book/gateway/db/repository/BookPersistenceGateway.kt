@@ -67,10 +67,10 @@ class BookPersistenceGateway(private val bookRepository: BookRepository) : Livro
         return this.bookRepository.existsById(id)
     }
 
-    override fun findOneByCodBarrasIgnoreCase(codBarras: String): Book {
+    override fun findOneBybarCodeIgnoreCase(codBarras: String): Book {
         log.info("M=findOneByCodBarrasIgnoreCase, codBarras=${codBarras}")
 
-        return Book.createFromBookEntity(this.bookRepository.findOneByCodBarrasIgnoreCase(codBarras))
+        return Book.createFromBookEntity(this.bookRepository.findOneBybarCodeIgnoreCase(codBarras))
 
     }
 

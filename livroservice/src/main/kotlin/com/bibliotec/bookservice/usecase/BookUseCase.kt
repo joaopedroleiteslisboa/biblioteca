@@ -33,8 +33,8 @@ class BookUseCase(private val livroGateway: LivroGateway) {
         return this.livroGateway.existsById(id)
     }
 
-    fun findOneByCodBarrasIgnoreCase(codBarras: String): Book {
-        return this.livroGateway.findOneByCodBarrasIgnoreCase(codBarras)
+    fun findOneBybarCodeIgnoreCase(codBarras: String): Book {
+        return this.livroGateway.findOneBybarCodeIgnoreCase(codBarras)
     }
 
 

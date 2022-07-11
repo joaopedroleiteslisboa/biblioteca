@@ -13,7 +13,7 @@ interface BookRepository: JpaRepository<BookEntity, Long> , JpaSpecificationExec
     fun findByNameContaining(nome: String?, pageable: Pageable?): Page<BookEntity?>?
 
 
-    fun findOneByCodBarrasIgnoreCase(codBarras: String?): BookEntity?
+    fun findOneBybarCodeIgnoreCase(codBarras: String?): BookEntity?
 
     fun findOneByIsbn13IgnoreCase(isbn13: String?): BookEntity?
 
