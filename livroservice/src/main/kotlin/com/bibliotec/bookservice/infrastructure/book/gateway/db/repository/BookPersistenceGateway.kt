@@ -4,11 +4,14 @@ import com.bibliotec.bookservice.domain.livro.gateway.LivroGateway
 import com.bibliotec.bookservice.infrastructure.config.db.entity.BookEntity
 import com.bibliotec.bookservice.infrastructure.book.controller.models.Book
 import com.bibliotec.bookservice.infrastructure.config.customexception.NotFoundException
+import com.bibliotec.bookservice.infrastructure.config.db.querys.BookFilters
+import com.bibliotec.bookservice.infrastructure.config.db.querys.BookSpecification
 import com.bibliotec.bookservice.infrastructure.config.exception.ErrorMessageConstants
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 import javax.transaction.Transactional
 
@@ -42,11 +45,11 @@ class BookPersistenceGateway(private val bookRepository: BookRepository) : Livro
 
     }
 
-    override fun findByNameContaining(name: String?, pageable: Pageable?): Page<Book?>? {
+    override fun findByNameContaining(name: String, pageable: Pageable?): Page<Book?>? {
         log.info("M=findByNomeContaining, name=$name")
 
         var returnBooks: Page<Book?>? = null
-        val booksPageEntity = this.bookRepository.findByNameContaining(name, pageable)?.let { it ->
+        this.bookRepository.findByNameContaining(name, pageable)?.let { it ->
             val book = it.content.map { itEntity -> Book.createFromBookEntity(itEntity) }
             returnBooks = PageImpl(book, it.pageable, book.size.toLong())
         }
@@ -74,4 +77,29 @@ class BookPersistenceGateway(private val bookRepository: BookRepository) : Livro
 
     }
 
+    override fun findFilters(filter: BookFilters, pageable: Pageable): Page<Book?>? {
+        log.info("M=findFilters")
+        var returnBooks: Page<Book?>? = null
+        val query: Specification<BookEntity?>? = Specification.where(
+                BookSpecification.findById(filter.id)
+                        ?.and(BookSpecification.findByIdPublisher(filter.idPublisher))
+                        ?.and(BookSpecification.findByEdition(filter.edition))
+                        ?.and(BookSpecification.findByBarCode(filter.barcode))
+                        ?.and(BookSpecification.findByIsbn13(filter.isbn13))
+                        ?.and(BookSpecification.findByLanguageEnum(filter.language))
+                        ?.and(BookSpecification.findByNameContaining(filter.name))
+                        ?.and(BookSpecification.findByDescriptionContaining(filter.description))
+                        ?.and(BookSpecification.hasCategorys(filter.idsCategorys))
+                        ?.and(BookSpecification.hasAthors(filter.idsAuthors))
+                        ?.and(BookSpecification.findByCreationDate(filter.initialDateCreate, filter.endDateDateCreate))
+
+        )
+
+        this.bookRepository.findAll(query, pageable).let { it ->
+            val book = it.content.map { itEntity -> Book.createFromBookEntity(itEntity) }
+            returnBooks = PageImpl(book, it.pageable, book.size.toLong())
+        }
+
+        return returnBooks
+    }
 }

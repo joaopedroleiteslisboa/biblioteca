@@ -74,7 +74,7 @@ class BookSpecification {
             }
         }
 
-        fun porLanguageEnum(language: LanguageEnum?): Specification<BookEntity?>? {
+        fun findByLanguageEnum(language: LanguageEnum?): Specification<BookEntity?>? {
             return if (language == null) {
                 null
             } else {
