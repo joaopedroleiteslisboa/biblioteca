@@ -1,6 +1,6 @@
 package com.bibliotec.bookservice.infrastructure.book.gateway.db.repository
 
-import com.bibliotec.bookservice.domain.livro.gateway.LivroGateway
+import com.bibliotec.bookservice.domain.livro.gateway.BookGateway
 import com.bibliotec.bookservice.infrastructure.config.db.entity.BookEntity
 import com.bibliotec.bookservice.infrastructure.book.controller.models.Book
 import com.bibliotec.bookservice.infrastructure.config.customexception.NotFoundException
@@ -8,15 +8,13 @@ import com.bibliotec.bookservice.infrastructure.config.db.querys.BookFilters
 import com.bibliotec.bookservice.infrastructure.config.db.querys.BookSpecification
 import com.bibliotec.bookservice.infrastructure.config.exception.ErrorMessageConstants
 import org.slf4j.LoggerFactory
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.*
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 import javax.transaction.Transactional
 
 @Component
-class BookPersistenceGateway(private val bookRepository: BookRepository) : LivroGateway {
+class BookPersistenceGateway(private val bookRepository: BookRepository) : BookGateway {
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
@@ -77,7 +75,7 @@ class BookPersistenceGateway(private val bookRepository: BookRepository) : Livro
 
     }
 
-    override fun findFilters(filter: BookFilters, pageable: Pageable): Page<Book?>? {
+    override fun findFilters(filter: BookFilters, pageable: Pageable?): Page<Book?>? {
         log.info("M=findFilters")
         var returnBooks: Page<Book?>? = null
         val query: Specification<BookEntity?>? = Specification.where(
@@ -95,7 +93,10 @@ class BookPersistenceGateway(private val bookRepository: BookRepository) : Livro
 
         )
 
-        this.bookRepository.findAll(query, pageable).let { it ->
+        val page: Pageable = PageRequest.of(pageable?.pageNumber ?: 0, pageable?.pageSize
+                ?: 100, Sort.by("name").descending())
+
+        this.bookRepository.findAll(query, page).let { it ->
             val book = it.content.map { itEntity -> Book.createFromBookEntity(itEntity) }
             returnBooks = PageImpl(book, it.pageable, book.size.toLong())
         }

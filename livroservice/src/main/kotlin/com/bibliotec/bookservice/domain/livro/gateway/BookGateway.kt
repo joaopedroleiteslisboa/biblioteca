@@ -5,7 +5,7 @@ import com.bibliotec.bookservice.infrastructure.config.db.querys.BookFilters
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
-interface LivroGateway {
+interface BookGateway {
 
     fun findById(id: Long): Book
 
@@ -21,6 +21,6 @@ interface LivroGateway {
 
     fun findOneBybarCodeIgnoreCase(codBarras: String): Book
 
-    fun findFilters(filter: BookFilters, pageable: Pageable): Page<Book?>?
+    fun findFilters(filter: BookFilters, pageable: Pageable?): Page<Book?>?
 
 }
