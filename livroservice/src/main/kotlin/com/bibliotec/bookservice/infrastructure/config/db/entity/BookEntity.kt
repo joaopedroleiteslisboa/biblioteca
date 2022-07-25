@@ -26,35 +26,35 @@ data class BookEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id")
-        val id: Long? = null,
+        var id: Long? = null,
 
         @CreatedBy
         @Column(name = "created_by", nullable = false, length = 70, updatable = false)
-        val createdBy: String? = null,
+        var createdBy: String? = null,
 
         @CreatedDate
         @Column(name = "created_date", updatable = false)
-        val createdDate: Instant? = Instant.now(),
+        var createdDate: LocalDate? = LocalDate.now(),
 
         @LastModifiedBy
         @Column(name = "last_modified_by", length = 70)
-        val lastModifiedBy: String? = null,
+        var lastModifiedBy: String? = null,
 
         @LastModifiedDate
         @Column(name = "last_modified_date")
-        val lastModifiedDate: Instant? = Instant.now(),
+        var lastModifiedDate: LocalDate? = LocalDate.now(),
 
-        @Column(name = "barCode", length = 13)
-        val barCode: String? = null,
+        @Column(name = "barCode", length = 40)
+        var barCode: String? = null,
 
         @Size(max = 256)
         @Column(name = "imageUrl", length = 256)
-        val imageUrl: String? = null,
+        var imageUrl: String? = null,
 
         @NotBlank(message = "Digite um nome de livro")
         @Size(max = 200, message = "Nome de livro muito grande")
         @Column(name = "name")
-        val name: String? = null,
+        var name: String? = null,
 
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
@@ -62,19 +62,19 @@ data class BookEntity(
                 joinColumns = [JoinColumn(name = "id_book")],
                 inverseJoinColumns = [JoinColumn(name = "id_author")]
         )
-        val authorsEntity: Set<AuthorEntity> = HashSet<AuthorEntity>(),
+        var authorsEntity: Set<AuthorEntity> = HashSet<AuthorEntity>(),
 
         @JoinColumn(name = "idPublisher")
         @ManyToOne(optional = false, fetch = FetchType.EAGER)
-        val publisher: PublisherEntity? = null,
+        var publisher: PublisherEntity? = null,
 
         @NotNull(message = "Este campo é obrigatorio")
         @Column(name = "edition")
-        val edition: String? = null,
+        var edition: String? = null,
 
         @Enumerated(EnumType.STRING)
         @Column(name = "languageEnum")
-        val languageEnum: LanguageEnum? = null,
+        var languageEnum: LanguageEnum? = null,
 
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
@@ -82,31 +82,31 @@ data class BookEntity(
                 joinColumns = [JoinColumn(name = "id_book")],
                 inverseJoinColumns = [JoinColumn(name = "id_category")]
         )
-        val categorys: Set<CategoryEntity> = HashSet<CategoryEntity>(),
+        var categorys: Set<CategoryEntity> = HashSet<CategoryEntity>(),
 
         @Size(max = 8388607, min = 3, message = "Descrição do livro muito grande")
         @Column(name = "description")
-        val description: String? = null,
+        var description: String? = null,
 
         @NotNull(message = "Insira o ISBN do livro")
         @Column(name = "isbn13")
-        val isbn13: String? = null,
+        var isbn13: String? = null,
 
         @NotNull(message = "O livro deve ter o número de paginas")
         @Min(value = 1, message = "O livro deve ter no minimo 1 pagina")
         @Column(name = "pageNumber")
-        val pageNumber: Int? = null,
+        var pageNumber: Int? = null,
 
         @NotNull(message = "Insira uma data de publicação")
         @Past(message = "A data deve ser inferior a atual")
         @Column(name = "publicationDate")
         @DateTimeFormat(pattern = "dd-MM-yyyy")
-        val publicationDate: LocalDate? = null,
+        var publicationDate: LocalDate? = null,
 
         @DecimalMin(value = "1.00", message = "O livro deve ter um preço valido")
         @NotNull(message = "Insira um preço")
         @Column(name = "unitaryValue", precision = 10, scale = 2)
-        val unitaryValue: BigDecimal? = BigDecimal.ZERO,
+        var unitaryValue: BigDecimal? = BigDecimal.ZERO,
 
         @NotNull(message = "Informe uma quantidade adicionada em seu Estoque de Livros")
         @Column(name = "quantity")
@@ -115,7 +115,7 @@ data class BookEntity(
                 max = 100,
                 message = "Informe pelo menos {min} livro para Salvar no Estoque ou um valor maximo de {max}"
         )
-        val quantity: Int? = null,
+        var quantity: Int? = null,
 
         ) : AbstractAuditingEntity() {
 

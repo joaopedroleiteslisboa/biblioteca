@@ -20,9 +20,7 @@ class BookSpecification {
                 null
             } else {
                 Specification { root: Root<BookEntity?>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
-                    cb.equal(
-                            root.get<Any>("id"), id
-                    )
+                    cb.equal(root.get<Any>("id"), id)
                 }
             }
         }
@@ -43,21 +41,17 @@ class BookSpecification {
                 null
             } else {
                 Specification<BookEntity?> { root: Root<BookEntity?>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
-                    val BookEntity =
-                            root.join<Any, Any>("edition")
-                    cb.like(cb.upper(BookEntity.get("edition")), "%" + edition.toUpperCase() + "%")
+                    cb.like(cb.upper(root.get("edition")), "%" + edition.toUpperCase() + "%")
                 }
             }
         }
 
-        fun findByBarCode(barcode: String?): Specification<BookEntity?>? {
-            return if (barcode == null) {
+        fun findByBarCode(barCode: String?): Specification<BookEntity?>? {
+            return if (barCode == null) {
                 null
             } else {
                 Specification<BookEntity?> { root: Root<BookEntity?>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
-                    val BookEntity =
-                            root.join<Any, Any>("barcode")
-                    cb.like(cb.upper(BookEntity.get("barcode")), "%" + barcode.toUpperCase() + "%")
+                    cb.like(cb.upper(root.get("barCode")), "%" + barCode.toUpperCase() + "%")
                 }
             }
         }
@@ -67,9 +61,7 @@ class BookSpecification {
                 null
             } else {
                 Specification<BookEntity?> { root: Root<BookEntity?>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
-                    val BookEntity =
-                            root.join<Any, Any>("isbn13")
-                    cb.like(cb.upper(BookEntity.get("isbn13")), "%" + isbn13.toUpperCase() + "%")
+                    cb.like(cb.upper(root.get("isbn13")), "%" + isbn13.toUpperCase() + "%")
                 }
             }
         }
@@ -78,8 +70,7 @@ class BookSpecification {
             return if (language == null) {
                 null
             } else {
-                Specification<BookEntity?> { root: Root<BookEntity?>, query: CriteriaQuery<*>?, cb: CriteriaBuilder
-                    ->
+                Specification<BookEntity?> { root: Root<BookEntity?>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
                     cb.equal(root.get<Any>("languageEnum"), language)
                 }
             }
@@ -90,9 +81,7 @@ class BookSpecification {
                 null
             } else {
                 Specification<BookEntity?> { root: Root<BookEntity?>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
-                    val BookEntity =
-                            root.join<Any, Any>("name")
-                    cb.like(cb.upper(BookEntity.get("name")), "%" + name.toUpperCase() + "%")
+                    cb.like(cb.upper(root.get("name")), "%" + name.toUpperCase() + "%")
                 }
             }
         }
@@ -102,9 +91,7 @@ class BookSpecification {
                 null
             } else {
                 Specification<BookEntity?> { root: Root<BookEntity?>, query: CriteriaQuery<*>?, cb: CriteriaBuilder ->
-                    val BookEntity =
-                            root.join<Any, Any>("description")
-                    cb.like(cb.upper(BookEntity.get("description")), "%" + description.toUpperCase() + "%")
+                    cb.like(cb.upper(root.get("description")), "%" + description.toUpperCase() + "%")
                 }
             }
         }
@@ -113,7 +100,9 @@ class BookSpecification {
             return if (initialDate == null || endDate == null) {
                 null
             } else {
-                Specification<BookEntity?> { root: Root<BookEntity?>, query: CriteriaQuery<*>?, cb: CriteriaBuilder -> cb.between(root.get("createdDate"), initialDate, endDate) }
+                Specification<BookEntity?> { root: Root<BookEntity?>, query: CriteriaQuery<*>?,
+                  cb: CriteriaBuilder -> cb.between(root.get("createdDate"), initialDate, endDate)
+                }
             }
         }
 
@@ -130,8 +119,7 @@ class BookSpecification {
                     }
 
                     val count: Expression<Long> = cb.count(root.get<Any>("id"))
-                    val cq: CriteriaQuery<BookEntity> = query!!.distinct(true).groupBy(root.get<Any>("name"))
-                            .having(cb.greaterThanOrEqualTo(count, idsCategorys.size.toLong())) as CriteriaQuery<BookEntity>
+                    val cq: CriteriaQuery<BookEntity> = query!!.distinct(true).groupBy(root.get<Any>("name")).having(cb.greaterThanOrEqualTo(count, idsCategorys.size.toLong())) as CriteriaQuery<BookEntity>
                     categorysIdsPredicate
                 }
             }
@@ -150,8 +138,7 @@ class BookSpecification {
                     }
 
                     val count: Expression<Long> = cb.count(root.get<Any>("id"))
-                    val cq: CriteriaQuery<BookEntity> = query!!.distinct(true).groupBy(root.get<Any>("name"))
-                            .having(cb.greaterThanOrEqualTo(count, idsAuthors.size.toLong())) as CriteriaQuery<BookEntity>
+                    val cq: CriteriaQuery<BookEntity> = query!!.distinct(true).groupBy(root.get<Any>("name")).having(cb.greaterThanOrEqualTo(count, idsAuthors.size.toLong())) as CriteriaQuery<BookEntity>
                     AuthorsIdsPredicate
                 }
             }

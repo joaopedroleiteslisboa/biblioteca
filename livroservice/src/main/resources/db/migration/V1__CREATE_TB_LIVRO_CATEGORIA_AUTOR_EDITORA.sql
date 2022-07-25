@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS tb_book(
   created_date DATE,
   last_modified_by VARCHAR(70),
   last_modified_date DATE,
-  barCode VARCHAR(20) NOT NULL,
+  barCode VARCHAR(40) NOT NULL,
   imageUrl varchar(2048),
   name VARCHAR(200) NOT NULL UNIQUE,
   edition VARCHAR(9),

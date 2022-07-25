@@ -2,14 +2,40 @@ server:
   port: ${PORT:8083}
 
 ---
-
 spring:
-  data:
-    rest:
-      base-path: /api
   application:
     name: book-service
   mvc:
     throw-exception-if-no-handler-found: true
     static-path-pattern: /static
+    format:
+      date: dd-MM-yyyy
+      date-time: HH:Mm:ss dd-MM-yyyy
+      time: HH:mm:ss
+  jackson:
+    date-format: dd-MM-yyyy
+    mapper:
+      accept-case-insensitive-properties: true
+    deserialization:
+      fail-on-unknown-properties: true
+    time-zone: America/Sao_Paulo
+
 ---
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: /
+  endpoint:
+    health:
+      show-details: ALWAYS
+      enabled: true
+  health:
+    redis:
+      enabled: false
+    rabbit:
+      enabled: false
+    binders:
+      enabled: false
+    circuit-breakers:
+      enabled: true

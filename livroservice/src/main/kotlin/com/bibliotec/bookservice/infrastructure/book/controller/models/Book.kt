@@ -20,15 +20,15 @@ class Book(
 
         var id: Long? = null,
 
-        val createdBy: String? = null,
+        var createdBy: String? = null,
 
-        val createdDate: Instant? = Instant.now(),
+        var createdDate: LocalDate? = LocalDate.now(),
 
-        val lastModifiedBy: String? = null,
+        var lastModifiedBy: String? = null,
 
-        val lastModifiedDate: Instant? = Instant.now(),
+        var lastModifiedDate: LocalDate? = LocalDate.now(),
 
-        var barCode: String? = UUID.randomUUID().toString(),
+        var barCode: String? = null,
 
         var imageUrl: String? = null,
 

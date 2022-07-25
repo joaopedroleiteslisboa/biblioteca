@@ -8,9 +8,14 @@ import com.bibliotec.bookservice.infrastructure.config.db.querys.BookFilters
 import com.bibliotec.bookservice.infrastructure.config.db.querys.BookSpecification
 import com.bibliotec.bookservice.infrastructure.config.exception.ErrorMessageConstants
 import org.slf4j.LoggerFactory
-import org.springframework.data.domain.*
+import org.springframework.data.domain.Sort
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
+import java.util.UUID
 import javax.transaction.Transactional
 
 @Component
@@ -26,7 +31,8 @@ class BookPersistenceGateway(private val bookRepository: BookRepository) : BookG
     @Transactional
     override fun save(book: Book): Book {
         log.info("M=save, name=${book.name}")
-
+        book.barCode = UUID.randomUUID().toString()
+        book.createdBy = "DEFAULT"
         return Book.createFromBookEntity(this.bookRepository.save(BookEntity.createFromBook(book)))
 
     }
@@ -78,20 +84,20 @@ class BookPersistenceGateway(private val bookRepository: BookRepository) : BookG
     override fun findFilters(filter: BookFilters, pageable: Pageable?): Page<Book?>? {
         log.info("M=findFilters")
         var returnBooks: Page<Book?>? = null
-        val query: Specification<BookEntity?>? = Specification.where(
-                BookSpecification.findById(filter.id)
-                        ?.and(BookSpecification.findByIdPublisher(filter.idPublisher))
-                        ?.and(BookSpecification.findByEdition(filter.edition))
-                        ?.and(BookSpecification.findByBarCode(filter.barcode))
-                        ?.and(BookSpecification.findByIsbn13(filter.isbn13))
-                        ?.and(BookSpecification.findByLanguageEnum(filter.language))
-                        ?.and(BookSpecification.findByNameContaining(filter.name))
-                        ?.and(BookSpecification.findByDescriptionContaining(filter.description))
-                        ?.and(BookSpecification.hasCategorys(filter.idsCategorys))
-                        ?.and(BookSpecification.hasAthors(filter.idsAuthors))
-                        ?.and(BookSpecification.findByCreationDate(filter.initialDateCreate, filter.endDateDateCreate))
 
-        )
+        val query: Specification<BookEntity?> = Specification.where(
+                BookSpecification.findById(filter.id)
+        ).and(BookSpecification.findByIdPublisher(filter.idPublisher))
+                .and(BookSpecification.findByEdition(filter.edition))
+                .and(BookSpecification.findByBarCode(filter.barcode))
+                .and(BookSpecification.findByIsbn13(filter.isbn13))
+                .and(BookSpecification.findByLanguageEnum(filter.language))
+                .and(BookSpecification.findByNameContaining(filter.name))
+                .and(BookSpecification.findByDescriptionContaining(filter.description))
+                .and(BookSpecification.hasCategorys(filter.idsCategorys))
+                .and(BookSpecification.hasAthors(filter.idsAuthors))
+                .and(BookSpecification.findByCreationDate(filter.initialDateCreate, filter.endDateDateCreate))
+
 
         val page: Pageable = PageRequest.of(pageable?.pageNumber ?: 0, pageable?.pageSize
                 ?: 100, Sort.by("name").descending())
