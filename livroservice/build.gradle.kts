@@ -8,7 +8,7 @@ plugins {
 	kotlin("plugin.jpa") version "1.6.10"
 }
 
-group = "com.bibliotec.livroservice"
+group = "com.bibliotec.bookservice"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
@@ -17,6 +17,7 @@ repositories {
 }
 
 dependencies {
+
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -30,7 +31,6 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("javax.validation:validation-api:2.0.1.Final")
 	implementation("org.hibernate:hibernate-validator:8.0.0.Alpha3")
-
 }
 
 tasks.withType<KotlinCompile> {

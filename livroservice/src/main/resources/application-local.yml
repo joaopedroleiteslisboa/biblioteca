@@ -1,19 +1,19 @@
 spring:
   profiles: local
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: none
       naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
-        physical-strategy=: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MariaDB103Dialect
-        default_schema: DB_LIVROS_SERVICE
+        default_schema: DB_BOOK_SERVICE
         format_sql: true
   datasource:
-    url: jdbc:mariadb://localhost:3306/DB_LIVROS_SERVICE
+    url: jdbc:mariadb://localhost:3306/DB_BOOK_SERVICE
     username: root
     password: admin
     driver-class-name: org.mariadb.jdbc.Driver
